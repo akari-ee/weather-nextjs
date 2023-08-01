@@ -15,10 +15,8 @@ export default async function Home() {
 
   return (
     <div className='h-screen text-black z-0 snap-y snap-mandatory overflow-y-scroll bg-slate-400'>
-      {/* Header */}
-      {/* <Header /> */}
       {/* Today Weather */}
-      <section id='today' className='snap-start'>
+      <section id='today' className='snap-start scroll-my-10 my-10'>
         <TodayWeather promise={todayWeathers} />
       </section>
       <section className='mx-auto px-5 flex flex-col justify-center max-w-lg lg:max-w-screen-lg lg:grid lg:grid-cols-2 lg:grid-rows-2 gap-4'>
