@@ -27,8 +27,8 @@ export default function WeekWeather({
         <WeeklyItem
           key={weather.time}
           time={tzToWeek(weather.time)}
-          minTemp={weather.values.temperatureMax.toFixed()}
-          maxTemp={weather.values.temperatureMin.toFixed()}
+          minTemp={weather.values.temperatureMin.toFixed()}
+          maxTemp={weather.values.temperatureMax.toFixed()}
         />
       ))}
     </div>
