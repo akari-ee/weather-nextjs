@@ -12,17 +12,17 @@ dayjs.locale('ko'); // 한국어로 설정
 
 const tzToWeek = (dt: string) => dayjs(dt).format('ddd');
 
-export default async function WeekWeather({
+export default function WeekWeather({
   promise,
 }: {
-  promise: Promise<any>;
+  promise: any;
 }) {
-
-  const data = await promise;
+  const data = promise;
   const weatherList = data.timelines.daily;
   
   return (
-    <div className='relative flex flex-col space-y-5 mx-5 border rounded-xl py-3 pl-3'>
+    <div className='relative h-full flex flex-col space-y-5 border rounded-xl py-3 px-3'>
+      <header className='text-sm font-semibold'>5일간의 날씨</header>
       {weatherList.map((weather: any) => (
         <WeeklyItem
           key={weather.time}

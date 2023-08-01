@@ -1,7 +1,7 @@
 import React from 'react';
 
 type Props = {
-  time: string;
+  time?: string;
   temp?: string;
   minTemp?: string;
   maxTemp?: string;
@@ -19,11 +19,11 @@ export const HourlyItem = ({ time, temp }: Props) => {
 
 export const WeeklyItem = ({ time, minTemp, maxTemp }: Props) => {
   return (
-    <div className='flex justify-evenly'>
+    <div className='flex justify-evenly border border-x-0  border-y-0 border-b-2'>
       <div className='w-1/5'>{time}</div>
       <div className='w-1/5'>ICON</div>
       <div className='w-3/5 flex justify-evenly font-semibold'>
-        <div className='text-gray-400'>{minTemp}</div>
+        <div className='text-gray-700'>{minTemp}</div>
         <div>막대기</div>
         <div>{maxTemp}</div>
       </div>
