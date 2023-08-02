@@ -6,6 +6,12 @@ type Props = {
   minTemp?: string;
   maxTemp?: string;
 };
+type ListProps = {
+  location: string;
+  temp: string;
+  minTemp: string;
+  maxTemp: string;
+};
 
 export const HourlyItem = ({ time, temp }: Props) => {
   return (
@@ -26,6 +32,27 @@ export const WeeklyItem = ({ time, minTemp, maxTemp }: Props) => {
         <div className='text-gray-700'>{minTemp}</div>
         <div>막대기</div>
         <div>{maxTemp}</div>
+      </div>
+    </div>
+  );
+};
+
+export const ListItem = ({ location, temp, minTemp, maxTemp }: ListProps) => {
+  return (
+    <div className='h-32 flex justify-between p-4 border border-gray-700 rounded-3xl'>
+      <div className='font-semibold text-2xl'>
+        <span>{location}</span>
+      </div>
+      <div className='flex flex-col items-end justify-between'>
+        <div className='font-light text-5xl'>{temp}</div>
+        <div className='flex justify-center items-center space-x-3 font-medium'>
+          <div>
+            <span>최고:{maxTemp}</span>
+          </div>
+          <div>
+            <span>최저:{minTemp}</span>
+          </div>
+        </div>
       </div>
     </div>
   );
