@@ -4,23 +4,24 @@ import React, { use, useEffect } from 'react';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 type Props = {};
 
-export default function TodayWeather({ promise }: { promise: any }) {
+export default function TodayWeather({ promise, other }:{ promise: any, other: any }) {
   const data = promise;
   const weather = data.data.values;
-  const location = data.location;
+  const location = data.location.name;
   const temperature = weather.temperature;
-  const maxTemperature = (temperature + 3).toFixed();
-  const minTemperature = (temperature - 5).toFixed();
+  const maxTemperature = other.timelines.daily[1].values.temperatureMax.toFixed();
+  const minTemperature = other.timelines.daily[1].values.temperatureMin.toFixed();
+  
+  // const { scrollY } = useScroll();
 
-  const { scrollY } = useScroll();
-
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    console.log('Page scroll: ', latest);
-  });
+  // useMotionValueEvent(scrollY, 'change', (latest) => {
+  //   console.log('Page scroll: ', latest);
+  // });
+  
   return (
     <header className='mx-auto flex flex-col justify-center items-center z-20 text-center'>
       <p className='text-3xl pl-2'>나의 위치</p>
-      <p className='text-sm'>{location.name}</p>
+      <p className='text-sm'>{location}</p>
       <p className='text-7xl pl-5'>{temperature.toFixed()}°</p>
       <p>흐림</p>
       <div className='flex space-x-3'>
