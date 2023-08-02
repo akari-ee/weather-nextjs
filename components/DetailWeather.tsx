@@ -1,5 +1,4 @@
 import React from 'react';
-import DetailItem from './WeatherItem';
 import dayjs from 'dayjs';
 
 type Props = {};
@@ -19,13 +18,19 @@ export default function DetailWeather({ promise }: { promise: any }) {
           <span>평균</span>
         </div>
         <div className='text-3xl font-medium'>{avgTemp}°</div>
-        <div className='text-lg font-medium mb-2'>{avgTemp <= '0' ? '평균보다 낮음' : '평균보다 높음'}</div>
+        <div className='text-lg font-medium mb-2'>
+          {avgTemp <= '0' ? '평균보다 낮음' : '평균보다 높음'}
+        </div>
         <div className='space-x-1'>
-          <span className='font-semibold'>{weather.temperatureAvg.toFixed()}°</span>
+          <span className='font-semibold'>
+            {weather.temperatureAvg.toFixed()}°
+          </span>
           <span>평균 최고 기온</span>
         </div>
         <div className='space-x-1'>
-          <span className='font-semibold'>{weather.temperatureMax.toFixed()}°</span>
+          <span className='font-semibold'>
+            {weather.temperatureMax.toFixed()}°
+          </span>
           <span>오늘 최고 기온</span>
         </div>
       </div>
