@@ -26,7 +26,7 @@ export default function Modal({ onClose, windowSize }: Props) {
         exit={
           windowSize < 1024 ? { y: 200, opacity: 0 } : { x: -200, opacity: 0 }
         }
-        transition={{ ease: 'easeInOut', duration: 0.3 }}
+        transition={{ ease: 'easeInOut', duration: 0.5 }}
         id='modal-overlay'
         className='w-screen absolute h-screen lg:relative lg:max-w-screen-sm px-5 py-5 top-0 left-0 bg-black text-white'
       >
