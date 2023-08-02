@@ -2,6 +2,7 @@ import DetailWeather from '@/components/DetailWeather';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import HourlyWeather from '@/components/HourlyWeather';
+import Section from '@/components/Section';
 import TodayWeather from '@/components/TodayWeather';
 import { ListItem } from '@/components/WeatherItem';
 import WeekWeather from '@/components/WeekWeather';
@@ -14,9 +15,8 @@ export default async function Home() {
 
   return (
       <div className='w-screen h-screen relative text-black z-0 snap-y snap-mandatory overflow-y-scroll bg-slate-400'>
-        {/* Header */}
+        
         <Header />
-        {/* Today Weather */}
         <section id='today' className='snap-start scroll-my-10 my-10'>
           <TodayWeather promise={todayWeathers} other={weekWeathers} />
         </section>
@@ -24,11 +24,9 @@ export default async function Home() {
           <section id='hourly' className='snap-start'>
             <HourlyWeather promise={hourlyWeathers} />
           </section>
-          {/* Week Weather */}
           <section id='week' className='snap-start lg:col-start-1'>
             <WeekWeather promise={weekWeathers} />
           </section>
-          {/* Detail Weather */}
           <section
             id='detail'
             className='snap-start lg:row-start-1 lg:row-span-2 lg:col-start-2 lg:h-full'
@@ -36,8 +34,10 @@ export default async function Home() {
             <DetailWeather promise={weekWeathers} />
           </section>
         </section>
-        {/* Footer */}
         <Footer />
+
+        {/* Temporary Animated */}
+        {/* <Section todayWeathers={todayWeathers} hourlyWeathers={hourlyWeathers} weekWeathers={weekWeathers} /> */}
       </div>
   );
 }
