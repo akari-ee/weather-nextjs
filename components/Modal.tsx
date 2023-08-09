@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ListItem } from './WeatherItem';
@@ -31,8 +31,9 @@ export default function Modal({
     onClose();
   };
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [selectedCity, setSelectedCity] = useState<object>([]);
 
   const handleSearch = (e: any) => {
     const input = e.target.value.toLowerCase();
@@ -44,6 +45,26 @@ export default function Modal({
     else setSearchResults(filteredCountries);
   };
 
+  const handleClick = (city: any[]) => {
+    setSelectedCity(city);
+  };
+
+  // localstorage에 선택한 도시 저장
+  useEffect(() => {
+    if (selectedCity) {
+      const prevCities: string | null = localStorage.getItem('selectedCity');
+      if (prevCities === null || prevCities === undefined) {
+        localStorage.setItem('selectedCity', JSON.stringify(selectedCity));
+        return;
+      } 
+
+      let prevCitiesArr: any[] = JSON.parse(prevCities);
+      prevCitiesArr.push(selectedCity);
+      
+      localStorage.setItem('selectedCity', JSON.stringify(prevCitiesArr));
+    }
+  }, [selectedCity]);
+  
   //   exit를 적용하려면 상위 컴포넌트에서 AnimatePresence를 적용해야 한다.
   const modalContent = (
     <div
@@ -90,7 +111,11 @@ export default function Modal({
               />
               <ul className='space-y-3 px-3'>
                 {searchResults.map((item) => (
-                  <li key={item.country} className='cursor-pointer hover:text-gray-400'>
+                  <li
+                    key={item.country}
+                    className='cursor-pointer hover:text-gray-400'
+                    onClick={() => handleClick(item)}
+                  >
                     {item.country} - {item.latitude} - {item.longitude}
                   </li>
                 ))}
