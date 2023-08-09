@@ -33,12 +33,37 @@ export default function Section({
     axis: 'x',
     initial: 300,
     min: 300,
-    max: 500
+    max: 500,
   });
+
+  const [showModal, setShowModal] = useState(false);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize(window.innerWidth);
+    };
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [windowSize]);
 
   return (
     <div className='w-full lg:flex lg:grow'>
-      <Modal className='shrink-0 contents' modalW={modalW} />
+      {windowSize > 1024 && (
+        <Modal
+          className='shrink-0 contents'
+          modalW={modalW}
+          onClose={() => {
+            setShowModal(false);
+          }}
+          windowSize={windowSize}
+          isBottom={false}
+        />
+      )}
       <Splitter isDragging={isModalDragging} {...modalDragBarProps} />
       <section id='content-wrapper' className='flex flex-col grow'>
         <section id='today' className='snap-start scroll-my-10 my-10'>

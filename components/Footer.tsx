@@ -41,6 +41,7 @@ export default function Footer({}: Props) {
               setShowModal(false);
             }}
             windowSize={windowSize}
+            isBottom={true}
           />
         )}
       </AnimatePresence>
