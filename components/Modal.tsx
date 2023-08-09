@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ListItem } from './WeatherItem';
 import { AiOutlineRollback } from '@react-icons/all-files/ai/AiOutlineRollback';
+import countriesData from '../data/country-lat-long.json';
+
 type Props = {
   onClose: () => void;
   windowSize: number;
@@ -29,6 +31,19 @@ export default function Modal({
     onClose();
   };
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+
+  const handleSearch = (e: any) => {
+    const input = e.target.value.toLowerCase();
+    const filteredCountries: any[] = countriesData.countries.filter((country) =>
+      country.country.toLowerCase().startsWith(input)
+    );
+    setSearchTerm(input);
+    if (input === '') setSearchResults([]);
+    else setSearchResults(filteredCountries);
+  };
+
   //   exit를 적용하려면 상위 컴포넌트에서 AnimatePresence를 적용해야 한다.
   const modalContent = (
     <div
@@ -45,7 +60,8 @@ export default function Modal({
       // id='modal-overlay'
       className={cn(
         'w-screen h-screen lg:block px-5 py-5 top-0 left-0 bg-black text-white overflow-y-scroll',
-        className, isBottom ? 'absolute' : ''
+        className,
+        isBottom ? 'absolute' : ''
       )}
       style={{ width: modalW }}
     >
@@ -64,7 +80,22 @@ export default function Modal({
           </div>
           <div className='space-y-3 mb-3'>
             <h3 className='text-3xl font-bold'>날씨</h3>
-            <div>검색바</div>
+            <div id='search-box' className='space-y-3'>
+              <input
+                type='text'
+                placeholder='Search'
+                value={searchTerm}
+                onChange={handleSearch}
+                className='border border-gray-300 p-2 rounded block text-black w-full'
+              />
+              <ul className='space-y-3 px-3'>
+                {searchResults.map((item) => (
+                  <li key={item.country} className='cursor-pointer hover:text-gray-400'>
+                    {item.country} - {item.latitude} - {item.longitude}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           <div id='modal-body' className='space-y-2'>
             <ListItem
