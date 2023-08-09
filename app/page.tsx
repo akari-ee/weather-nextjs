@@ -2,11 +2,14 @@ import DetailWeather from '@/components/DetailWeather';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import HourlyWeather from '@/components/HourlyWeather';
+import Modal from '@/components/Modal';
 import Section from '@/components/Section';
+import Splitter from '@/components/Splitter';
 import TodayWeather from '@/components/TodayWeather';
 import { ListItem } from '@/components/WeatherItem';
 import WeekWeather from '@/components/WeekWeather';
 import { AnimatePresence } from 'framer-motion';
+import { useResizable } from 'react-resizable-layout';
 
 export default async function Home() {
   const todayWeathers = await getTodayWeather();
@@ -14,31 +17,16 @@ export default async function Home() {
   const weekWeathers = await getWeekWeather();
 
   return (
-      <div className='w-screen h-screen relative text-black z-0 snap-y snap-mandatory overflow-y-scroll bg-slate-400'>
-        
-        <Header />
-        <section id='today' className='snap-start scroll-my-10 my-10'>
-          <TodayWeather promise={todayWeathers} other={weekWeathers} />
-        </section>
-        <section className='mx-auto px-5 flex flex-col justify-center max-w-lg lg:max-w-screen-lg lg:grid lg:grid-cols-2 lg:grid-rows-2 gap-4'>
-          <section id='hourly' className='snap-start'>
-            <HourlyWeather promise={hourlyWeathers} />
-          </section>
-          <section id='week' className='snap-start lg:col-start-1'>
-            <WeekWeather promise={weekWeathers} />
-          </section>
-          <section
-            id='detail'
-            className='snap-start lg:row-start-1 lg:row-span-2 lg:col-start-2 lg:h-full'
-          >
-            <DetailWeather promise={weekWeathers} />
-          </section>
-        </section>
-        <Footer />
+    <div className='w-screen h-screen relative text-black z-0 snap-y snap-mandatory overflow-y-scroll bg-slate-400 lg:flex '>
+      <Section
+        todayWeathers={todayWeathers}
+        hourlyWeathers={hourlyWeathers}
+        weekWeathers={weekWeathers}
+      />
 
-        {/* Temporary Animated */}
-        {/* <Section todayWeathers={todayWeathers} hourlyWeathers={hourlyWeathers} weekWeathers={weekWeathers} /> */}
-      </div>
+      {/* Temporary Animated */}
+      {/* <Section todayWeathers={todayWeathers} hourlyWeathers={hourlyWeathers} weekWeathers={weekWeathers} /> */}
+    </div>
   );
 }
 
