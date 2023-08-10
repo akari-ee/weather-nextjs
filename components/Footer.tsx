@@ -16,7 +16,6 @@ export default function Footer({}: Props) {
     const handleResize = () => {
       setWindowSize(window.innerWidth);
     };
-    console.log(windowSize);
     handleResize();
 
     window.addEventListener('resize', handleResize);

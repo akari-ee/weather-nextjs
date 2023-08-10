@@ -33,7 +33,7 @@ export default function Section({
     axis: 'x',
     initial: 300,
     min: 300,
-    max: 500,
+    max: 400,
   });
 
   const [showModal, setShowModal] = useState(false);
