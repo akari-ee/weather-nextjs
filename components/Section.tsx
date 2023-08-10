@@ -32,7 +32,7 @@ export default function Section({
   } = useResizable({
     axis: 'x',
     initial: 300,
-    min: 300,
+    min: 320,
     max: 400,
   });
 
