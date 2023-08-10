@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ListItem } from './WeatherItem';
+import { CityItem } from './WeatherItem';
 import { AiOutlineRollback } from '@react-icons/all-files/ai/AiOutlineRollback';
 import countriesData from '../data/country-lat-long.json';
 
@@ -13,6 +13,7 @@ type Props = {
   className?: string;
   modalW?: number;
   isBottom: boolean;
+  // savedCities: any[] | null;
 };
 
 export const cn = (...classes: any[]) => {
@@ -24,48 +25,60 @@ export default function Modal({
   windowSize,
   className,
   modalW,
-  isBottom,
+  isBottom, // savedCities,
 }: Props) {
   const handleOnClose = (e: any) => {
     e.preventDefault();
     onClose();
   };
 
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [selectedCity, setSelectedCity] = useState<object>([]);
+  const [searchTerm, setSearchTerm] = useState<string>(''); // 검색 바
+  const [searchResults, setSearchResults] = useState<any[]>([]); // 검색 결과
+  const [storage, setStorage] = useState<any>(); // 저장된 도시 목록
 
+  // 도시 검색 기능
   const handleSearch = (e: any) => {
     const input = e.target.value.toLowerCase();
     const filteredCountries: any[] = countriesData.countries.filter((country) =>
       country.country.toLowerCase().startsWith(input)
     );
     setSearchTerm(input);
-    if (input === '') setSearchResults([]);
-    else setSearchResults(filteredCountries);
+    if (input !== '') setSearchResults(filteredCountries);
   };
 
-  const handleClick = (city: any[]) => {
-    setSelectedCity(city);
+  // 도시 선택 시 해당 도시 추가
+  const handleClick = (city : any) => {
+    let curStorage = JSON.parse(localStorage.getItem('selectedCity')!);
+    setSearchTerm('');
+    setSearchResults([]);
+
+    // 이미 추가된 도시인지 확인
+    const alreadyExist = curStorage.some((item: any) => item.country === city.country);
+    if (alreadyExist) return; // 추가된 도시라면 추가하지 않음
+
+    // 추가하지 않았을 경우 추가한다.
+    curStorage.push(city);
+    localStorage.setItem('selectedCity', JSON.stringify(curStorage));
+    setStorage(curStorage);
   };
 
-  // localstorage에 선택한 도시 저장
+  // 첫 렌더링 시, 저장된 도시 목록 불러오기
   useEffect(() => {
-    if (selectedCity) {
-      const prevCities: string | null = localStorage.getItem('selectedCity');
-      if (prevCities === null || prevCities === undefined) {
-        localStorage.setItem('selectedCity', JSON.stringify(selectedCity));
-        return;
-      } 
-
-      let prevCitiesArr: any[] = JSON.parse(prevCities);
-      prevCitiesArr.push(selectedCity);
-      
-      localStorage.setItem('selectedCity', JSON.stringify(prevCitiesArr));
+    const curStorage = JSON.parse(localStorage.getItem('selectedCity')!);
+    if (curStorage === null) {
+      localStorage.setItem('selectedCity', JSON.stringify([]));
+      return;
     }
-  }, [selectedCity]);
-  
-  //   exit를 적용하려면 상위 컴포넌트에서 AnimatePresence를 적용해야 한다.
+    setStorage(curStorage);
+  }, []);
+
+  // 도시 선택 시, re-render
+  useEffect(() => {
+
+  }, [storage]);
+
+
+  // exit를 적용하려면 상위 컴포넌트에서 AnimatePresence를 적용해야 한다.
   const modalContent = (
     <div
       // initial={
@@ -123,24 +136,16 @@ export default function Modal({
             </div>
           </div>
           <div id='modal-body' className='space-y-2'>
-            <ListItem
-              location={'서울'}
-              temp={'33'}
-              minTemp={'22'}
-              maxTemp={'35'}
-            />
-            <ListItem
-              location={'서울'}
-              temp={'33'}
-              minTemp={'22'}
-              maxTemp={'35'}
-            />
-            <ListItem
-              location={'서울'}
-              temp={'33'}
-              minTemp={'22'}
-              maxTemp={'35'}
-            />
+            {storage &&
+              storage.map((city: any) => (
+                <CityItem
+                  key={city.country}
+                  city={city.country}
+                  temp={'0'}
+                  minTemp={'0'}
+                  maxTemp={'0'}
+                />
+              ))}
           </div>
         </div>
       </div>
