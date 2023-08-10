@@ -7,7 +7,7 @@ type Props = {
   maxTemp?: string;
 };
 type ListProps = {
-  location: string;
+  city: string;
   temp: string;
   minTemp: string;
   maxTemp: string;
@@ -37,11 +37,11 @@ export const WeeklyItem = ({ time, minTemp, maxTemp }: Props) => {
   );
 };
 
-export const ListItem = ({ location, temp, minTemp, maxTemp }: ListProps) => {
+export const CityItem = ({ city, temp, minTemp, maxTemp }: ListProps) => {
   return (
     <div className='h-32 flex justify-between p-4 border border-gray-700 rounded-3xl'>
       <div className='font-semibold text-2xl'>
-        <span>{location}</span>
+        <span>{city}</span>
       </div>
       <div className='flex flex-col items-end justify-between'>
         <div className='font-light text-5xl'>{temp}</div>
