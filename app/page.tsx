@@ -7,7 +7,7 @@ export default async function Home() {
   let savedCities: any[] | null = null;
 
   return (
-    <div className='w-screen h-screen relative text-black z-0 snap-y snap-mandatory overflow-y-scroll bg-slate-400 lg:flex '>
+    <div className='w-screen h-screen relative text-black z-0 bg-slate-400 lg:flex'>
       <Section
         todayWeathers={todayWeathers}
         hourlyWeathers={hourlyWeathers}
