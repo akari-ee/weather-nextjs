@@ -65,7 +65,7 @@ export default function Section({
         />
       )}
       <Splitter isDragging={isModalDragging} {...modalDragBarProps} />
-      <section id='content-wrapper' className='flex flex-col grow'>
+      <section id='content-wrapper' className='w-full h-screen snap-y snap-mandatory overflow-y-scroll lg:flex lg:flex-col lg:grow'>
         <section id='today' className='snap-start scroll-my-10 my-10'>
           <TodayWeather promise={todayWeathers} other={weekWeathers} />
         </section>
