@@ -1,5 +1,5 @@
 import React from 'react';
-import { HourlyItem } from './WeatherItem';
+import { HourlyItem } from './Item';
 import dayjs from 'dayjs';
 
 type Props = {

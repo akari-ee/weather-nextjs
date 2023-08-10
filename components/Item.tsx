@@ -39,13 +39,13 @@ export const WeeklyItem = ({ time, minTemp, maxTemp }: Props) => {
 
 export const CityItem = ({ city, temp, minTemp, maxTemp }: ListProps) => {
   return (
-    <div className='h-32 flex justify-between p-4 border border-gray-700 rounded-3xl'>
-      <div className='font-semibold text-2xl'>
+    <div className='h-32 flex justify-between p-3 border border-gray-700 rounded-3xl'>
+      <div className='font-semibold text-lg'>
         <span>{city}</span>
       </div>
       <div className='flex flex-col items-end justify-between'>
-        <div className='font-light text-5xl'>{temp}</div>
-        <div className='flex justify-center items-center space-x-3 font-medium'>
+        <div className='font-light text-4xl'>{temp}</div>
+        <div className='flex justify-center items-center space-x-3 font-medium text-sm'>
           <div>
             <span>최고:{maxTemp}</span>
           </div>

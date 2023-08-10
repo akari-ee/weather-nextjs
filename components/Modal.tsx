@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CityItem } from './WeatherItem';
+import { CityItem } from './Item';
 import { AiOutlineRollback } from '@react-icons/all-files/ai/AiOutlineRollback';
 import countriesData from '../data/country-lat-long.json';
 
@@ -47,13 +47,15 @@ export default function Modal({
   };
 
   // 도시 선택 시 해당 도시 추가
-  const handleClick = (city : any) => {
+  const handleClick = (city: any) => {
     let curStorage = JSON.parse(localStorage.getItem('selectedCity')!);
     setSearchTerm('');
     setSearchResults([]);
 
     // 이미 추가된 도시인지 확인
-    const alreadyExist = curStorage.some((item: any) => item.country === city.country);
+    const alreadyExist = curStorage.some(
+      (item: any) => item.country === city.country
+    );
     if (alreadyExist) return; // 추가된 도시라면 추가하지 않음
 
     // 추가하지 않았을 경우 추가한다.
@@ -73,10 +75,7 @@ export default function Modal({
   }, []);
 
   // 도시 선택 시, re-render
-  useEffect(() => {
-
-  }, [storage]);
-
+  useEffect(() => {}, [storage]);
 
   // exit를 적용하려면 상위 컴포넌트에서 AnimatePresence를 적용해야 한다.
   const modalContent = (
