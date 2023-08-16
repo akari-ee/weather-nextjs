@@ -14,7 +14,10 @@ import { AiOutlineUnorderedList } from '@react-icons/all-files/ai/AiOutlineUnord
 import { ImMap2 } from '@react-icons/all-files/im/ImMap2';
 import Splitter from './Splitter';
 import { useResizable } from 'react-resizable-layout';
-type Props = {};
+type Location = {
+  latitude?: number;
+  longitude?: number;
+};
 
 export default function Section({
   todayWeathers,
@@ -31,13 +34,30 @@ export default function Section({
     splitterProps: modalDragBarProps,
   } = useResizable({
     axis: 'x',
-    initial: 300,
-    min: 320,
-    max: 400,
+    initial: 400,
+    min: 400,
+    max: 500,
   });
 
   const [showModal, setShowModal] = useState(false);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
+  const [location, setLocation] = useState<Location>({});
+
+  const handleModal = () => {
+    setShowModal(true);
+  }
+
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(({ coords }) => {
+        const { latitude, longitude } = coords;
+        setLocation({ latitude: latitude, longitude: longitude });
+      });
+    }
+  }, []);
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -51,11 +71,11 @@ export default function Section({
     };
   }, [windowSize]);
 
+  
   return (
-    <div className='w-full lg:flex lg:grow'>
-      {windowSize > 1024 && (
+    <div className='w-screen min-h-full relative lg:flex lg:grow overflow-hidden'>
+      {windowSize > 1024 ? (
         <Modal
-          className='shrink-0 contents'
           modalW={modalW}
           onClose={() => {
             setShowModal(false);
@@ -63,9 +83,22 @@ export default function Section({
           windowSize={windowSize}
           isBottom={false}
         />
+      ) : (
+        <Modal
+          modalW={modalW}
+          onClose={() => {
+            setShowModal(false);
+          }}
+          windowSize={windowSize}
+          isBottom={true}
+          isOpen={showModal}
+        />
       )}
       <Splitter isDragging={isModalDragging} {...modalDragBarProps} />
-      <section id='content-wrapper' className='w-full h-screen snap-y snap-mandatory overflow-y-scroll lg:flex lg:flex-col lg:grow'>
+      <section
+        id='content-wrapper'
+        className='w-full max-h-screen snap-y snap-mandatory overflow-y-scroll lg:flex lg:flex-col lg:grow lg:justify-center lg:items-center'
+      >
         <section id='today' className='snap-start scroll-my-10 my-10'>
           <TodayWeather promise={todayWeathers} other={weekWeathers} />
         </section>
@@ -83,7 +116,7 @@ export default function Section({
             <DetailWeather promise={weekWeathers} />
           </section>
         </section>
-        <Footer />
+        <Footer handleModal={handleModal}/>
       </section>
     </div>
   );
