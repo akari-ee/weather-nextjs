@@ -1,19 +1,18 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { AnimatePresence, motion } from 'framer-motion';
 import { CityItem } from './Item';
 import { AiOutlineRollback } from '@react-icons/all-files/ai/AiOutlineRollback';
 import countriesData from '../data/country-lat-long.json';
+import { fetchWeekWeather } from '@/utils/fetchWeekWeather';
+import { fetchTodayWeather } from '@/utils/fetchTodayWeather';
 
 type Props = {
   onClose: () => void;
   windowSize: number;
-  className?: string;
   modalW?: number;
   isBottom: boolean;
-  // savedCities: any[] | null;
+  isOpen?: boolean;
 };
 
 export const cn = (...classes: any[]) => {
@@ -23,9 +22,9 @@ export const cn = (...classes: any[]) => {
 export default function Modal({
   onClose,
   windowSize,
-  className,
   modalW,
-  isBottom, // savedCities,
+  isBottom,
+  isOpen
 }: Props) {
   const handleOnClose = (e: any) => {
     e.preventDefault();
@@ -47,7 +46,10 @@ export default function Modal({
   };
 
   // 도시 선택 시 해당 도시 추가
-  const handleClick = (city: any) => {
+  const handleClick = async (city: any) => {
+    const notRealTimeData = await fetchWeekWeather(city.latitude, city.longitude);
+    const realTimeData = await fetchTodayWeather(city.latitude, city.longitude);
+
     let curStorage = JSON.parse(localStorage.getItem('selectedCity')!);
     setSearchTerm('');
     setSearchResults([]);
@@ -59,7 +61,16 @@ export default function Modal({
     if (alreadyExist) return; // 추가된 도시라면 추가하지 않음
 
     // 추가하지 않았을 경우 추가한다.
-    curStorage.push(city);
+    curStorage.push({
+      country: city.country,
+      avgTemp: realTimeData.data.values.temperature.toFixed(),
+      minTemp:
+        notRealTimeData.timelines.daily[1].values.temperatureMin.toFixed(),
+      maxTemp:
+        notRealTimeData.timelines.daily[1].values.temperatureMax.toFixed(),
+      latitude: city.latitude,
+      longitude: city.longitude,
+    });
     localStorage.setItem('selectedCity', JSON.stringify(curStorage));
     setStorage(curStorage);
   };
@@ -80,23 +91,12 @@ export default function Modal({
   // exit를 적용하려면 상위 컴포넌트에서 AnimatePresence를 적용해야 한다.
   const modalContent = (
     <div
-      // initial={
-      //   windowSize < 1024 ? { y: 200, opacity: 0 } : { x: -200, opacity: 0 }
-      // }
-      // whileInView={
-      //   windowSize < 1024 ? { y: 0, opacity: 1 } : { x: 0, opacity: 1 }
-      // }
-      // exit={
-      //   windowSize < 1024 ? { y: 200, opacity: 0 } : { x: -200, opacity: 0 }
-      // }
-      // transition={{ ease: 'easeInOut', duration: 0.5 }}
-      // id='modal-overlay'
       className={cn(
-        'w-screen h-screen lg:block px-5 py-5 top-0 left-0 bg-black text-white overflow-y-scroll',
-        className,
-        isBottom ? 'absolute' : ''
+        'w-full h-screen lg:opacity-100 lg:block px-5 py-5 top-0 left-0 bg-black text-white overflow-y-scroll shrink-0 transition-all ease-in-out duration-300',
+        isBottom ? 'absolute' : 'z-[9999]',
+        isOpen ? 'opacity-100 bottom-auto z-10' : 'opacity-0 z-[-99]'
       )}
-      style={{ width: modalW }}
+      style={!isBottom ? { width: modalW} : {}}
     >
       <div id='modal-wrapper'>
         <div id='modal'>
@@ -116,10 +116,10 @@ export default function Modal({
             <div id='search-box' className='space-y-3'>
               <input
                 type='text'
-                placeholder='Search'
+                placeholder='도시 검색'
                 value={searchTerm}
                 onChange={handleSearch}
-                className='border border-gray-300 p-2 rounded block text-black w-full'
+                className='border border-gray-300 p-2 rounded block text-black w-full focus:outline-none'
               />
               <ul className='space-y-3 px-3'>
                 {searchResults.map((item) => (
@@ -128,7 +128,7 @@ export default function Modal({
                     className='cursor-pointer hover:text-gray-400'
                     onClick={() => handleClick(item)}
                   >
-                    {item.country} - {item.latitude} - {item.longitude}
+                    {item.country}
                   </li>
                 ))}
               </ul>
@@ -140,9 +140,9 @@ export default function Modal({
                 <CityItem
                   key={city.country}
                   city={city.country}
-                  temp={'0'}
-                  minTemp={'0'}
-                  maxTemp={'0'}
+                  temp={city.avgTemp}
+                  minTemp={city.minTemp}
+                  maxTemp={city.maxTemp}
                 />
               ))}
           </div>
@@ -151,10 +151,5 @@ export default function Modal({
     </div>
   );
 
-  return isBottom
-    ? ReactDOM.createPortal(
-        modalContent,
-        document.getElementById('modal-root') as HTMLElement
-      )
-    : modalContent;
+  return modalContent;
 }
