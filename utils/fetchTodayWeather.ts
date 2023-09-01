@@ -5,6 +5,7 @@ export async function fetchTodayWeather(lat?: string, lng?: string) {
       method: 'GET',
       headers: { accept: 'application/json' },
       next: { revalidate: 3600 },
+      cache: 'force-cache',
     }
   );
   if (!res.ok) {
