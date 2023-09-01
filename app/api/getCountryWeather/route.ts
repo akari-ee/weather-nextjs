@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server"
-export async function POST(request: NextRequest) {
-  const { lat, lon } = request.body;
+export async function GET(req: NextRequest) {
+  const { lat, lon } = await req.json();
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_REALTIME_BASE_URL}?location=${lat}, ${lon}&units=metric&apikey=${process.env.NEXT_PUBLIC_TOMORROW_API_KEY}`,
   {
