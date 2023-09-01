@@ -2,6 +2,7 @@
 import dynamic from 'next/dynamic';
 const Section = dynamic(() => import('../components/Section'), { ssr: false });
 
+// Why it doesn't work?
 // Home
 export default async function Home() {
   const todayWeathers = await getTodayWeather();
