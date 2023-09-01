@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
   const city = url.searchParams.get('city');
 
   const res = await fetch(
-    `${process.env._REALTIME_BASE_URL}?location=${city}&units=metric&apikey=${process.env._TOMORROW_API_KEY}`,
+    `${process.env.REALTIME_BASE_URL}?location=${city}&units=metric&apikey=${process.env.TOMORROW_API_KEY}`,
     {
       method: 'GET',
       headers: { accept: 'application/json' },
