@@ -1,7 +1,7 @@
-// import Section from '../components/Section';
-import dynamic from 'next/dynamic';
-const Section = dynamic(() => import('../components/Section'), { ssr: false });
-
+import Section from '../components/Section';
+// import dynamic from 'next/dynamic';
+// const Section = dynamic(() => import('../components/Section'), { ssr: false });
+export const dynamic = 'force-dynamic';
 // Why it doesn't work?
 // Home
 export default async function Home() {
