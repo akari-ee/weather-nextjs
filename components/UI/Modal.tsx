@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState, Fragment } from 'react';
+import React, {useEffect, useState, Fragment } from 'react';
 import { CityItem } from '@/components/item/Item';
 import { AiOutlineRollback } from '@react-icons/all-files/ai/AiOutlineRollback';
 import countriesData from '../../data/country-lat-long.json';

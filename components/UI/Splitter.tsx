@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-type Props = {};
-
 export default function Splitter({
   id = 'drag-bar',
   dir,

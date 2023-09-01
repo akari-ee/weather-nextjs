@@ -11,7 +11,6 @@ import { BsGraphUp } from '@react-icons/all-files/bs/BsGraphUp';
 import { GiOppression } from '@react-icons/all-files/gi/GiOppression';
 import { setVisibilityDescription } from '@/utils/handleWeatherDetail';
 
-type Props = {};
 
 function tzToKST(dt: string) {
   return dayjs(dt).format('HH:mm');

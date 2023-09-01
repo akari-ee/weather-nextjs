@@ -3,11 +3,6 @@ import { HourlyItem } from '@/components/item/Item';
 import dayjs from 'dayjs';
 import { setWeatherPath } from '@/utils/handleWeatherDetail';
 
-type Props = {
-  time: string;
-  temp: string;
-};
-
 function tzToKST(dt: string) {
   return dayjs(dt).format('HH');
 }

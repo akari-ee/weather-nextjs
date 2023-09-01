@@ -16,11 +16,6 @@ import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
 import Link from 'next/link';
 import { FaVimeo } from '@react-icons/all-files/fa/FaVimeo';
 
-type Location = {
-  latitude?: number;
-  longitude?: number;
-};
-
 export default function Section({
   todayWeathers,
   hourlyWeathers,
@@ -43,7 +38,6 @@ export default function Section({
 
   const [showModal, setShowModal] = useState(false);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
-  const [location, setLocation] = useState<Location>({});
   const [isModalClicked, setIsModalClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -132,10 +126,7 @@ export default function Section({
             exit={{ y: -1000, opacity: 0 }}
             transition={{ ease: 'easeInOut', duration: 1.3 }}
           >
-            <section
-              id='today'
-              className='py-10'
-            >
+            <section id='today' className='py-10'>
               <TodayWeather promise={todayWeather} other={weekWeather} />
             </section>
             <section className='mx-auto px-5 flex flex-col justify-center max-w-lg lg:max-w-screen-lg lg:grid lg:grid-cols-2 lg:grid-rows-2 gap-4 mb-32'>

@@ -7,8 +7,6 @@ import 'dayjs/locale/ko';
 import { WeeklyItem } from '@/components/item/Item';
 import { setWeatherPath } from '@/utils/handleWeatherDetail';
 
-type Props = {};
-
 dayjs.locale('ko'); // 한국어로 설정
 
 const tzToWeek = (dt: string) => dayjs(dt).format('ddd');

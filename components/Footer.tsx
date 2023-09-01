@@ -3,15 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineUnorderedList } from '@react-icons/all-files/ai/AiOutlineUnorderedList';
 import { ImMap2 } from '@react-icons/all-files/im/ImMap2';
-import Modal from './UI/Modal';
-import { time } from 'console';
-import { AnimatePresence } from 'framer-motion';
 type FooterProps = {
   handleModal: () => void;
 };
 
 export default function Footer({ handleModal }: FooterProps) {
-  const [showModal, setShowModal] = useState(false);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
 
   useEffect(() => {

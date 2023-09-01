@@ -1,4 +1,5 @@
-import Section from '@/components/Section';
+import dynamic from 'next/dynamic';
+const Section = dynamic(() => import('@/components/Section'), { ssr: false });
 
 export default async function Home() {
   const todayWeathers = await getTodayWeather();

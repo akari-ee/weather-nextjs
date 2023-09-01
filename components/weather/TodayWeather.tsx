@@ -1,8 +1,6 @@
 'use client';
 
-import React, { use, useEffect } from 'react';
-import { useMotionValueEvent, useScroll } from 'framer-motion';
-type Props = {};
+import React from 'react';
 
 export default function TodayWeather({ promise, other }:{ promise: any, other: any }) {
   const data = promise;
