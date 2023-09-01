@@ -6,14 +6,11 @@ import HourlyWeather from './HourlyWeather';
 import WeekWeather from './WeekWeather';
 import DetailWeather from './DetailWeather';
 import Footer from './Footer';
-import { AnimatePresence, motion } from 'framer-motion';
 import Modal from './Modal';
-
-import { BsCardList } from '@react-icons/all-files/bs/BsCardList';
-import { AiOutlineUnorderedList } from '@react-icons/all-files/ai/AiOutlineUnorderedList';
-import { ImMap2 } from '@react-icons/all-files/im/ImMap2';
+import { motion } from 'framer-motion';
 import Splitter from './Splitter';
 import { useResizable } from 'react-resizable-layout';
+
 type Location = {
   latitude?: number;
   longitude?: number;
@@ -60,9 +57,6 @@ export default function Section({
       });
     }
   }, []);
-  useEffect(() => {
-    console.log(location);
-  }, [location]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -92,10 +86,12 @@ export default function Section({
     setTodayWeather(todayWeathers);
     setHourlyWeather(hourlyWeathers);
     setWeekWeather(weekWeathers);
-
-    setIsModalClicked(prev => !prev);
+    setIsModalClicked((prev) => !prev);
   };
-  useEffect(() => {}, [isModalClicked]);
+
+  useEffect(() => {
+    // 값이 변경될 때마다 animate 속성을 업데이트
+  }, [isModalClicked]);
 
   return (
     <div className='w-screen min-h-full relative lg:flex lg:grow overflow-hidden'>
@@ -126,23 +122,31 @@ export default function Section({
         id='content-wrapper'
         className='w-full max-h-screen snap-y snap-mandatory overflow-y-scroll lg:flex lg:flex-col lg:grow lg:justify-center lg:items-center'
       >
-        <section id='today' className='snap-start scroll-my-10 my-10'>
-          <TodayWeather promise={todayWeather} other={weekWeathers} />
-        </section>
-        <section className='mx-auto px-5 flex flex-col justify-center max-w-lg lg:max-w-screen-lg lg:grid lg:grid-cols-2 lg:grid-rows-2 gap-4'>
-          <section id='hourly' className='snap-start'>
-            <HourlyWeather promise={hourlyWeather} />
+        <motion.div
+          initial={{ y: -1000, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -1000, opacity: 0 }}
+          transition={{ ease: 'easeInOut', duration: 1.3 }}
+        >
+          <section id='today' className='snap-start scroll-my-10 my-10'>
+            <TodayWeather promise={todayWeather} other={weekWeather} />
           </section>
-          <section id='week' className='snap-start lg:col-start-1'>
-            <WeekWeather promise={weekWeather} />
+          <section className='mx-auto px-5 flex flex-col justify-center max-w-lg lg:max-w-screen-lg lg:grid lg:grid-cols-2 lg:grid-rows-2 gap-4'>
+            <section id='hourly' className='snap-start'>
+              <HourlyWeather promise={hourlyWeather} />
+            </section>
+            <section id='week' className='snap-start lg:col-start-1'>
+              <WeekWeather promise={weekWeather} />
+            </section>
+            <section
+              id='detail'
+              className='snap-start lg:row-start-1 lg:row-span-2 lg:col-start-2 lg:h-full'
+            >
+              <DetailWeather promise={weekWeather} />
+            </section>
           </section>
-          <section
-            id='detail'
-            className='snap-start lg:row-start-1 lg:row-span-2 lg:col-start-2 lg:h-full'
-          >
-            <DetailWeather promise={weekWeather} />
-          </section>
-        </section>
+        </motion.div>
+
         <Footer handleModal={handleModal} />
       </section>
     </div>
