@@ -4,8 +4,6 @@ import React, { useEffect, useState, Fragment } from 'react';
 import { CityItem } from '@/components/item/Item';
 import { AiOutlineRollback } from '@react-icons/all-files/ai/AiOutlineRollback';
 import countriesData from '../../data/country-lat-long.json';
-import { fetchWeekWeather } from '@/utils/fetchWeekWeather';
-import { fetchTodayWeather } from '@/utils/fetchTodayWeather';
 import { cn } from '@/utils/classExtend';
 import { Dialog, Transition } from '@headlessui/react';
 export const runtime = 'edge';
