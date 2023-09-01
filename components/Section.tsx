@@ -10,6 +10,11 @@ import Modal from './Modal';
 import { motion } from 'framer-motion';
 import Splitter from './Splitter';
 import { useResizable } from 'react-resizable-layout';
+import Image from 'next/image';
+import { Spinner } from './UI/Spinner';
+import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
+import Link from 'next/link';
+import { FaVimeo } from '@react-icons/all-files/fa/FaVimeo';
 
 type Location = {
   latitude?: number;
@@ -40,30 +45,21 @@ export default function Section({
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const [location, setLocation] = useState<Location>({});
   const [isModalClicked, setIsModalClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [todayWeather, setTodayWeather] = useState<any>(todayWeathers);
   const [hourlyWeather, setHourlyWeather] = useState<any>(hourlyWeathers);
   const [weekWeather, setWeekWeather] = useState<any>(weekWeathers);
 
   const handleModal = () => {
-    setShowModal(true);
+    setShowModal((prev) => !prev);
   };
-
-  useEffect(() => {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(({ coords }) => {
-        const { latitude, longitude } = coords;
-        setLocation({ latitude: latitude, longitude: longitude });
-      });
-    }
-  }, []);
 
   useEffect(() => {
     const handleResize = () => {
       setWindowSize(window.innerWidth);
     };
     handleResize();
-
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -71,6 +67,8 @@ export default function Section({
   }, [windowSize]);
 
   const onClickModalItem = async (city: string) => {
+    setIsLoading(true);
+
     const todayRes = await fetch(`/api/getTodayWeather?city=${city}`);
     const hourlyRes = await fetch(`/api/getHourlyWeather?city=${city}`);
     const weekRes = await fetch(`/api/getWeekWeather?city=${city}`);
@@ -86,15 +84,18 @@ export default function Section({
     setTodayWeather(todayWeathers);
     setHourlyWeather(hourlyWeathers);
     setWeekWeather(weekWeathers);
+
     setIsModalClicked((prev) => !prev);
+
+    setIsLoading(false);
   };
 
-  useEffect(() => {
-    // 값이 변경될 때마다 animate 속성을 업데이트
-  }, [isModalClicked]);
-
+  useEffect(() => {}, [isModalClicked]);
   return (
-    <div className='w-screen min-h-full relative lg:flex lg:grow overflow-hidden'>
+    <div
+      id='main-section'
+      className='w-screen min-h-full relative lg:flex lg:grow overflow-hidden text-white'
+    >
       {windowSize > 1024 ? (
         <Modal
           modalW={modalW}
@@ -118,34 +119,62 @@ export default function Section({
         />
       )}
       <Splitter isDragging={isModalDragging} {...modalDragBarProps} />
+
       <section
-        id='content-wrapper'
-        className='w-full max-h-screen snap-y snap-mandatory overflow-y-scroll lg:flex lg:flex-col lg:grow lg:justify-center lg:items-center'
+        id='main-section'
+        className='w-full max-h-screen snap-y snap-mandatory overflow-y-scroll lg:flex lg:flex-col lg:grow lg:justify-center lg:items-center relative lg:pt-20'
       >
-        <motion.div
-          initial={{ y: -1000, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -1000, opacity: 0 }}
-          transition={{ ease: 'easeInOut', duration: 1.3 }}
-        >
-          <section id='today' className='snap-start scroll-my-10 my-10'>
-            <TodayWeather promise={todayWeather} other={weekWeather} />
-          </section>
-          <section className='mx-auto px-5 flex flex-col justify-center max-w-lg lg:max-w-screen-lg lg:grid lg:grid-cols-2 lg:grid-rows-2 gap-4'>
-            <section id='hourly' className='snap-start'>
-              <HourlyWeather promise={hourlyWeather} />
+        {isLoading && <Spinner />}
+        {!isLoading && (
+          <motion.div
+            initial={{ y: -1000, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -1000, opacity: 0 }}
+            transition={{ ease: 'easeInOut', duration: 1.3 }}
+          >
+            <section id='today' className='snap-start scroll-my-10 my-10 lg:py-10'>
+              <TodayWeather promise={todayWeather} other={weekWeather} />
             </section>
-            <section id='week' className='snap-start lg:col-start-1'>
-              <WeekWeather promise={weekWeather} />
+            <section className='mx-auto px-5 flex flex-col justify-center max-w-lg lg:max-w-screen-lg lg:grid lg:grid-cols-2 lg:grid-rows-2 gap-4 mb-32'>
+              <section
+                id='hourly'
+                className='snap-start lg:row-end-1 lg:col-start-1 lg:col-end-3'
+              >
+                <HourlyWeather promise={hourlyWeather} />
+              </section>
+              <section id='week' className='snap-start lg:col-start-1'>
+                <WeekWeather promise={weekWeather} />
+              </section>
+              <section
+                id='detail'
+                className='snap-start lg:row-start-1 lg:row-span-2 lg:col-start-2 lg:h-full'
+              >
+                <DetailWeather promise={weekWeather} />
+              </section>
             </section>
-            <section
-              id='detail'
-              className='snap-start lg:row-start-1 lg:row-span-2 lg:col-start-2 lg:h-full'
-            >
-              <DetailWeather promise={weekWeather} />
+            <section className='w-full h-30 flex flex-col justify-end items-center space-y-5 mb-5'>
+              <div className='flex flex-col justify-between items-center space-y-2'>
+                <div className='flex justify-between items-center space-x-3'>
+                  <Link href='https://github.com/lunarmoon7'>
+                    <FaGithub color='gray' size='30' />
+                  </Link>
+                  <Link href='https://velog.io/@49crehbgr'>
+                    <FaVimeo color='gray' size='30' />
+                  </Link>
+                </div>
+                <div className='text-gray-500'>
+                  © 2023 Zentechie All Rights Reserved.
+                </div>
+              </div>
+              <Image
+                src='/images/thanksTo.svg'
+                alt='thanks_to_Tomorrow.io'
+                width={300}
+                height={100}
+              />
             </section>
-          </section>
-        </motion.div>
+          </motion.div>
+        )}
 
         <Footer handleModal={handleModal} />
       </section>

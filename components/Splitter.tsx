@@ -17,7 +17,7 @@ export default function Splitter({
       id={id}
       data-testid={id}
       tabIndex={0}
-      className='cursor-col-resize w-1 h-full bg-gray-400'
+      className='cursor-col-resize w-1 h-full bg-black/20'
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       {...props}

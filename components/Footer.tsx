@@ -26,7 +26,7 @@ export default function Footer({ handleModal }: FooterProps) {
     };
   }, [windowSize]);
   return (
-    <div className='sticky bottom-0 flex justify-between items-center bg-slate-400 text-2xl px-5 py-2 lg:mt-5 lg:hidden'>
+    <div id='footer' className='sticky bottom-0 flex justify-between items-center text-2xl px-5 py-2 lg:mt-5 lg:hidden'>
       <div className='cursor-pointer'>
         <ImMap2 size={23} />
       </div>

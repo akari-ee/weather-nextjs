@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, Fragment } from 'react';
 import { CityItem } from './Item';
 import { AiOutlineRollback } from '@react-icons/all-files/ai/AiOutlineRollback';
 import countriesData from '../data/country-lat-long.json';
 import { fetchWeekWeather } from '@/utils/fetchWeekWeather';
 import { fetchTodayWeather } from '@/utils/fetchTodayWeather';
+import { cn } from '@/utils/classExtend';
+import { Dialog, Transition } from '@headlessui/react';
 
 type Props = {
   onClose: () => void;
@@ -14,10 +16,6 @@ type Props = {
   isBottom: boolean;
   isOpen?: boolean;
   onClick: (city: string) => void;
-};
-
-export const cn = (...classes: any[]) => {
-  return classes.filter(Boolean).join(' ');
 };
 
 export default function Modal({
@@ -81,7 +79,7 @@ export default function Modal({
     setStorage(curStorage);
   };
 
-  const onClickCityItem = (city : string) => {
+  const onClickCityItem = (city: string) => {
     onClick(city);
   };
 
@@ -99,11 +97,114 @@ export default function Modal({
   useEffect(() => {}, [storage]);
 
   // exit를 적용하려면 상위 컴포넌트에서 AnimatePresence를 적용해야 한다.
-  const modalContent = (
+  const bottomModalContent = (
+    <Transition.Root show={isOpen} as={Fragment}>
+      <Dialog as='div' className='relative z-10' onClose={onClose}>
+        <Transition.Child
+          as={Fragment}
+          enter='ease-in-out duration-500'
+          enterFrom='opacity-0'
+          enterTo='opacity-100'
+          leave='ease-in-out duration-500'
+          leaveFrom='opacity-100'
+          leaveTo='opacity-0'
+        >
+          <Dialog.Overlay className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+        </Transition.Child>
+        <div className='fixed inset-0 overflow-hidden'>
+          <div className='absolute inset-0 overflow-hidden'>
+            <div className='fixed inset-y-0 right-0 flex max-w-full'>
+              <Transition.Child
+                as={Fragment}
+                enter='transform transition ease-in-out duration-500 sm:duration-700'
+                enterFrom='translate-y-full'
+                enterTo='translate-y-0'
+                leave='transform transition ease-in-out duration-500 sm:duration-700'
+                leaveFrom='translate-y-0'
+                leaveTo='translate-y-full'
+              >
+                <Dialog.Panel className='relative w-screen'>
+                  <div
+                    id='modal-container'
+                    className={cn(
+                      'w-full h-screen lg:opacity-100 lg:block px-5 py-5 top-0 left-0 text-white overflow-y-scroll shrink-0 transition-all ease-in-out duration-300',
+                      isBottom
+                        ? 'absolute bg-[#324a5e]'
+                        : 'z-[9999] bg-[#005aa7]/30',
+                      isOpen
+                        ? 'opacity-100 bottom-auto z-10'
+                        : 'opacity-0 z-[-99]'
+                    )}
+                    style={!isBottom ? { width: modalW } : {}}
+                  >
+                    <div id='modal-wrapper'>
+                      <div id='modal'>
+                        <div id='modal-header' className='flex justify-end'>
+                          <div
+                            id='modal-close-btn'
+                            className='cursor-pointer'
+                            onClick={handleOnClose}
+                          >
+                            {windowSize < 1024 && (
+                              <AiOutlineRollback size={25} color='white' />
+                            )}
+                          </div>
+                        </div>
+                        <div className='space-y-3 mb-10'>
+                          <h3 className='text-3xl font-bold mb-5'>날씨</h3>
+                          <div id='search-box' className='space-y-3 rounded-2xl'>
+                            <input
+                              type='text'
+                              placeholder='도시 검색'
+                              value={searchTerm}
+                              onChange={handleSearch}
+                              className='border border-gray-300 p-2 rounded-2xl block text-black w-full focus:outline-none '
+                            />
+                            <ul className='space-y-3 px-3'>
+                              {searchResults.map((item) => (
+                                <li
+                                  key={item.country}
+                                  className='cursor-pointer hover:text-gray-400'
+                                  onClick={() => handleClick(item)}
+                                >
+                                  {item.country}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        <div id='modal-body' className='space-y-5'>
+                          {storage &&
+                            storage.map((city: any) => (
+                              <CityItem
+                                key={city.country}
+                                city={city.country}
+                                temp={city.avgTemp}
+                                minTemp={city.minTemp}
+                                maxTemp={city.maxTemp}
+                                latitude={city.latitude}
+                                longitude={city.longitude}
+                                onClick={onClickCityItem}
+                              />
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </div>
+      </Dialog>
+    </Transition.Root>
+  );
+  const sideModalContent = (
     <div
+      id='modal-container'
       className={cn(
-        'w-full h-screen lg:opacity-100 lg:block px-5 py-5 top-0 left-0 bg-black text-white overflow-y-scroll shrink-0 transition-all ease-in-out duration-300',
-        isBottom ? 'absolute' : 'z-[9999]',
+        'w-full h-screen lg:opacity-100 lg:block px-5 py-5 top-0 left-0 text-white overflow-y-scroll shrink-0 transition-all ease-in-out duration-300',
+        isBottom ? 'absolute bg-[#324a5e]' : 'z-[9999] bg-[#005aa7]/30',
         isOpen ? 'opacity-100 bottom-auto z-10' : 'opacity-0 z-[-99]'
       )}
       style={!isBottom ? { width: modalW } : {}}
@@ -121,8 +222,8 @@ export default function Modal({
               )}
             </div>
           </div>
-          <div className='space-y-3 mb-3'>
-            <h3 className='text-3xl font-bold'>날씨</h3>
+          <div className='space-y-3 mb-10'>
+            <h3 className='text-3xl font-bold mb-5'>날씨</h3>
             <div id='search-box' className='space-y-3'>
               <input
                 type='text'
@@ -144,7 +245,7 @@ export default function Modal({
               </ul>
             </div>
           </div>
-          <div id='modal-body' className='space-y-2'>
+          <div id='modal-body' className='space-y-5'>
             {storage &&
               storage.map((city: any) => (
                 <CityItem
@@ -163,6 +264,5 @@ export default function Modal({
       </div>
     </div>
   );
-
-  return modalContent;
+  return isBottom ? bottomModalContent : sideModalContent;
 }

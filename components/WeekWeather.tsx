@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 
 import { WeeklyItem } from './Item';
+import { setWeatherPath } from '@/utils/handleWeatherDetail';
 
 type Props = {};
 
@@ -17,7 +18,7 @@ export default function WeekWeather({ promise }: { promise: any }) {
   const weatherList = data.timelines.daily;
 
   return (
-    <div className='relative h-full flex flex-col space-y-5 border rounded-xl py-3 px-3'>
+    <div className='relative h-full flex flex-col space-y-7 rounded-xl py-5 px-5 bg-[#2980b9]/30 shadow-lg'>
       <header className='text-sm font-semibold'>5일간의 날씨</header>
       {weatherList.map((weather: any) => (
         <WeeklyItem
@@ -25,6 +26,7 @@ export default function WeekWeather({ promise }: { promise: any }) {
           time={tzToWeek(weather.time)}
           minTemp={weather.values.temperatureMin.toFixed()}
           maxTemp={weather.values.temperatureMax.toFixed()}
+          iconPath={setWeatherPath(weather.values.weatherCodeMax)}
         />
       ))}
     </div>
