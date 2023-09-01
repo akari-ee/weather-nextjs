@@ -15,7 +15,7 @@ export default async function Home() {
   );
 }
 
-async function getTodayWeather(lat?: string, lon?: string) {
+async function getTodayWeather() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_REALTIME_BASE_URL}?location=seoul&units=metric&apikey=${process.env.NEXT_PUBLIC_TOMORROW_API_KEY}`,
     {
@@ -32,7 +32,7 @@ async function getTodayWeather(lat?: string, lon?: string) {
   return data;
 }
 
-async function getHourlyWeather(lat?: string, lon?: string) {
+async function getHourlyWeather() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_WEEK_BASE_URL}?location=seoul&timesteps=1h&apikey=${process.env.NEXT_PUBLIC_TOMORROW_API_KEY}`,
     {
@@ -49,7 +49,7 @@ async function getHourlyWeather(lat?: string, lon?: string) {
   return data;
 }
 
-async function getWeekWeather(lat?: string, lon?: string) {
+async function getWeekWeather() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_WEEK_BASE_URL}?location=seoul&timesteps=1d&apikey=${process.env.NEXT_PUBLIC_TOMORROW_API_KEY}`,
     {
