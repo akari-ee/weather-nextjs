@@ -3,7 +3,6 @@ import Section from '../components/Section';
 // const Section = dynamic(() => import('../components/Section'), { ssr: false });
 export const dynamic = 'force-dynamic';
 // Why it doesn't work?
-// Home
 export default async function Home() {
   const todayWeathers = await getTodayWeather();
   const hourlyWeathers = await getHourlyWeather();
