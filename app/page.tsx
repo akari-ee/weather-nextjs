@@ -1,7 +1,7 @@
 import Section from '../components/Section';
 // import dynamic from 'next/dynamic';
 // const Section = dynamic(() => import('../components/Section'), { ssr: false });
-export const dynamic = 'force-dynamic';
+export const runtime = 'edge'
 // Why it doesn't work?
 export default async function Home() {
   const todayWeathers = await getTodayWeather();

@@ -1,4 +1,4 @@
-export const dynamic = 'force-static'
+export const runtime = 'edge'
 
 export async function fetchHourlyWeather() {
   const res = await fetch(
