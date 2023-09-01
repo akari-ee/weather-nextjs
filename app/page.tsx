@@ -18,7 +18,7 @@ export default async function Home() {
 
 async function getTodayWeather() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_REALTIME_BASE_URL}?location=seoul&units=metric&apikey=${process.env.NEXT_PUBLIC_TOMORROW_API_KEY}`,
+    `${process.env._REALTIME_BASE_URL}?location=seoul&units=metric&apikey=${process.env._TOMORROW_API_KEY}`,
     {
       method: 'GET',
       headers: { accept: 'application/json' },
@@ -35,7 +35,7 @@ async function getTodayWeather() {
 
 async function getHourlyWeather() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_WEEK_BASE_URL}?location=seoul&timesteps=1h&apikey=${process.env.NEXT_PUBLIC_TOMORROW_API_KEY}`,
+    `${process.env._WEEK_BASE_URL}?location=seoul&timesteps=1h&apikey=${process.env._TOMORROW_API_KEY}`,
     {
       method: 'GET',
       headers: { accept: 'application/json' },
@@ -52,7 +52,7 @@ async function getHourlyWeather() {
 
 async function getWeekWeather() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_WEEK_BASE_URL}?location=seoul&timesteps=1d&apikey=${process.env.NEXT_PUBLIC_TOMORROW_API_KEY}`,
+    `${process.env._WEEK_BASE_URL}?location=seoul&timesteps=1d&apikey=${process.env._TOMORROW_API_KEY}`,
     {
       method: 'GET',
       headers: { accept: 'application/json' },
