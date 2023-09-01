@@ -1,3 +1,5 @@
+export const dynamic = 'force-static'
+
 export async function fetchTodayWeather(lat?: string, lng?: string) {
   const res = await fetch(
     `${process.env.REALTIME_BASE_URL}?location=${lat}, ${lng}&units=metric&apikey=${process.env.TOMORROW_API_KEY}`,
