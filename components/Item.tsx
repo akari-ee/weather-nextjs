@@ -6,11 +6,14 @@ type Props = {
   minTemp?: string;
   maxTemp?: string;
 };
-type ListProps = {
+type CityItemProps = {
   city: string;
   temp: string;
   minTemp: string;
   maxTemp: string;
+  latitude: string;
+  longitude: string;
+  onClick: (city: string) => void;
 };
 
 export const HourlyItem = ({ time, temp }: Props) => {
@@ -37,9 +40,10 @@ export const WeeklyItem = ({ time, minTemp, maxTemp }: Props) => {
   );
 };
 
-export const CityItem = ({ city, temp, minTemp, maxTemp }: ListProps) => {
+export const CityItem = ({ city, temp, minTemp, maxTemp, onClick, latitude, longitude }: CityItemProps) => {
   return (
-    <div className='h-32 flex justify-between p-3 border border-gray-700 rounded-3xl cursor-pointer'>
+    <div className='h-32 flex justify-between p-3 border border-gray-700 rounded-3xl cursor-pointer' onClick={() => {
+      onClick(city)}}>
       <div className='font-semibold text-lg'>
         <span>{city}</span>
       </div>

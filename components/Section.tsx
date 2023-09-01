@@ -42,10 +42,15 @@ export default function Section({
   const [showModal, setShowModal] = useState(false);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const [location, setLocation] = useState<Location>({});
+  const [isModalClicked, setIsModalClicked] = useState(false);
+
+  const [todayWeather, setTodayWeather] = useState<any>(todayWeathers);
+  const [hourlyWeather, setHourlyWeather] = useState<any>(hourlyWeathers);
+  const [weekWeather, setWeekWeather] = useState<any>(weekWeathers);
 
   const handleModal = () => {
     setShowModal(true);
-  }
+  };
 
   useEffect(() => {
     if ('geolocation' in navigator) {
@@ -71,7 +76,27 @@ export default function Section({
     };
   }, [windowSize]);
 
-  
+  const onClickModalItem = async (city: string) => {
+    const todayRes = await fetch(`/api/getTodayWeather?city=${city}`);
+    const hourlyRes = await fetch(`/api/getHourlyWeather?city=${city}`);
+    const weekRes = await fetch(`/api/getWeekWeather?city=${city}`);
+
+    const todayData = await todayRes.json();
+    const hourlyData = await hourlyRes.json();
+    const weekData = await weekRes.json();
+
+    todayWeathers = todayData.data;
+    hourlyWeathers = hourlyData.data;
+    weekWeathers = weekData.data;
+
+    setTodayWeather(todayWeathers);
+    setHourlyWeather(hourlyWeathers);
+    setWeekWeather(weekWeathers);
+
+    setIsModalClicked(prev => !prev);
+  };
+  useEffect(() => {}, [isModalClicked]);
+
   return (
     <div className='w-screen min-h-full relative lg:flex lg:grow overflow-hidden'>
       {windowSize > 1024 ? (
@@ -82,6 +107,7 @@ export default function Section({
           }}
           windowSize={windowSize}
           isBottom={false}
+          onClick={onClickModalItem}
         />
       ) : (
         <Modal
@@ -92,6 +118,7 @@ export default function Section({
           windowSize={windowSize}
           isBottom={true}
           isOpen={showModal}
+          onClick={onClickModalItem}
         />
       )}
       <Splitter isDragging={isModalDragging} {...modalDragBarProps} />
@@ -100,23 +127,23 @@ export default function Section({
         className='w-full max-h-screen snap-y snap-mandatory overflow-y-scroll lg:flex lg:flex-col lg:grow lg:justify-center lg:items-center'
       >
         <section id='today' className='snap-start scroll-my-10 my-10'>
-          <TodayWeather promise={todayWeathers} other={weekWeathers} />
+          <TodayWeather promise={todayWeather} other={weekWeathers} />
         </section>
         <section className='mx-auto px-5 flex flex-col justify-center max-w-lg lg:max-w-screen-lg lg:grid lg:grid-cols-2 lg:grid-rows-2 gap-4'>
           <section id='hourly' className='snap-start'>
-            <HourlyWeather promise={hourlyWeathers} />
+            <HourlyWeather promise={hourlyWeather} />
           </section>
           <section id='week' className='snap-start lg:col-start-1'>
-            <WeekWeather promise={weekWeathers} />
+            <WeekWeather promise={weekWeather} />
           </section>
           <section
             id='detail'
             className='snap-start lg:row-start-1 lg:row-span-2 lg:col-start-2 lg:h-full'
           >
-            <DetailWeather promise={weekWeathers} />
+            <DetailWeather promise={weekWeather} />
           </section>
         </section>
-        <Footer handleModal={handleModal}/>
+        <Footer handleModal={handleModal} />
       </section>
     </div>
   );

@@ -4,8 +4,6 @@ export default async function Home() {
   const todayWeathers = await getTodayWeather();
   const hourlyWeathers = await getHourlyWeather();
   const weekWeathers = await getWeekWeather();
-  let savedCities: any[] | null = null;
-
   return (
     <div className='w-screen h-screen relative text-black z-0 bg-slate-400 lg:flex'>
       <Section
@@ -29,12 +27,12 @@ async function getTodayWeather(lat?: string, lon?: string) {
       next: { revalidate: 3600 },
     }
   );
-
   if (!res.ok) {
     throw new Error('API Error');
   }
 
-  return res.json();
+  const data = await res.json();
+  return data;
 }
 
 async function getHourlyWeather(lat?: string, lon?: string) {
@@ -50,8 +48,8 @@ async function getHourlyWeather(lat?: string, lon?: string) {
   if (!res.ok) {
     throw new Error('API Error');
   }
-
-  return res.json();
+  const data = await res.json();
+  return data;
 }
 
 async function getWeekWeather(lat?: string, lon?: string) {
@@ -67,6 +65,6 @@ async function getWeekWeather(lat?: string, lon?: string) {
   if (!res.ok) {
     throw new Error('API Error');
   }
-
-  return res.json();
+  const data = await res.json();
+  return data;
 }

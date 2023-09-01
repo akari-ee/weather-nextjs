@@ -12,12 +12,6 @@ export default function TodayWeather({ promise, other }:{ promise: any, other: a
   const maxTemperature = other.timelines.daily[1].values.temperatureMax.toFixed();
   const minTemperature = other.timelines.daily[1].values.temperatureMin.toFixed();
   
-  // const { scrollY } = useScroll();
-
-  // useMotionValueEvent(scrollY, 'change', (latest) => {
-  //   console.log('Page scroll: ', latest);
-  // });
-  
   return (
     <header className='mx-auto flex flex-col justify-center items-center z-20 text-center'>
       <p className='text-3xl pl-2'>나의 위치</p>
