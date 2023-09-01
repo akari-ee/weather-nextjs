@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     {
       method: 'GET',
       headers: { accept: 'application/json' },
-      cache: 'force-cache',
+      // cache: 'force-cache',
     }
   );
   if (!res.ok) {

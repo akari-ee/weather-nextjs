@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { CityItem } from '@/components/item/Item';
 import { AiOutlineRollback } from '@react-icons/all-files/ai/AiOutlineRollback';
 import countriesData from '../../data/country-lat-long.json';
@@ -8,6 +8,7 @@ import { fetchWeekWeather } from '@/utils/fetchWeekWeather';
 import { fetchTodayWeather } from '@/utils/fetchTodayWeather';
 import { cn } from '@/utils/classExtend';
 import { Dialog, Transition } from '@headlessui/react';
+export const runtime = 'edge';
 
 type Props = {
   onClose: () => void;
@@ -47,11 +48,13 @@ export default function Modal({
 
   // 도시 선택 시 해당 도시 추가
   const handleClick = async (city: any) => {
-    const notRealTimeData = await fetchWeekWeather(
-      city.latitude,
-      city.longitude
-    );
-    const realTimeData = await fetchTodayWeather(city.latitude, city.longitude);
+    const res1 = await fetch(`/api/getWeekWeather?city=${city.country}`);
+    const data1 = await res1.json();
+    const notRealTimeData = data1.data;
+
+    const res2 = await fetch(`http://localhost:3000/api/getTodayWeather?city=${city.country}`);
+    const data2 = await res2.json();
+    const realTimeData = data2.data;
 
     let curStorage = JSON.parse(localStorage.getItem('selectedCity')!);
     setSearchTerm('');
@@ -74,7 +77,6 @@ export default function Modal({
       latitude: city.latitude,
       longitude: city.longitude,
     });
-    console.log('modal: ', city.latitude, city.longitude);
     localStorage.setItem('selectedCity', JSON.stringify(curStorage));
     setStorage(curStorage);
   };

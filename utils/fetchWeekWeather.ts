@@ -1,4 +1,4 @@
-export const runtime = 'edge'
+// export const runtime = 'edge'
 
 export async function fetchWeekWeather(lat?:number, lng?:number) {
   const res = await fetch(
