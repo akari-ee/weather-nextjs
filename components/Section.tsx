@@ -6,7 +6,7 @@ import HourlyWeather from './weather/HourlyWeather';
 import WeekWeather from './weather/WeekWeather';
 import DetailWeather from './weather/DetailWeather';
 import Footer from './Footer';
-import Modal from './UI/Modal';
+// import Modal from './UI/Modal';
 import { motion } from 'framer-motion';
 import Splitter from './UI/Splitter';
 import { useResizable } from 'react-resizable-layout';
@@ -15,8 +15,10 @@ import { Spinner } from './UI/Spinner';
 import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
 import Link from 'next/link';
 import { FaVimeo } from '@react-icons/all-files/fa/FaVimeo';
+import dynamic from 'next/dynamic';
 
-export const dynamic = 'force-static'
+export const runtime = 'edge';
+export const Modal = dynamic (() => import ('./UI/Modal'), { ssr: false });
 
 export default function Section({
   todayWeathers,
