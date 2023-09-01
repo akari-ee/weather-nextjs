@@ -16,6 +16,8 @@ import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
 import Link from 'next/link';
 import { FaVimeo } from '@react-icons/all-files/fa/FaVimeo';
 
+export const dynamic = 'force-static'
+
 export default function Section({
   todayWeathers,
   hourlyWeathers,
@@ -50,9 +52,11 @@ export default function Section({
   };
 
   useEffect(() => {
+    if (window === undefined) return;
     const handleResize = () => {
       setWindowSize(window.innerWidth);
     };
+    
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => {

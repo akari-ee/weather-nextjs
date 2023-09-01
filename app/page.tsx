@@ -1,4 +1,6 @@
-import Section from '../components/Section';
+// import Section from '../components/Section';
+import dynamic from 'next/dynamic';
+const Section = dynamic(() => import('../components/Section'), { ssr: false });
 
 // Home
 export default async function Home() {
@@ -22,7 +24,7 @@ async function getTodayWeather() {
     {
       method: 'GET',
       headers: { accept: 'application/json' },
-      next: { revalidate: 3600 },
+      cache: 'force-cache',
     }
   );
   if (!res.ok) {
@@ -39,7 +41,7 @@ async function getHourlyWeather() {
     {
       method: 'GET',
       headers: { accept: 'application/json' },
-      next: { revalidate: 3600 },
+      cache: 'force-cache',
     }
   );
 
@@ -56,7 +58,7 @@ async function getWeekWeather() {
     {
       method: 'GET',
       headers: { accept: 'application/json' },
-      next: { revalidate: 3600 },
+      cache: 'force-cache',
     }
   );
 

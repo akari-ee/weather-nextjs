@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+export const dynamic = 'force-static'
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
@@ -9,7 +10,6 @@ export async function GET(req: NextRequest) {
     {
       method: 'GET',
       headers: { accept: 'application/json' },
-      next: { revalidate: 3600 },
       cache: 'force-cache',
     }
   );

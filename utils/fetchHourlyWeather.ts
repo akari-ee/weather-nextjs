@@ -4,7 +4,6 @@ export async function fetchHourlyWeather() {
     {
       method: 'GET',
       headers: { accept: 'application/json' },
-      next: { revalidate: 3600 },
       cache: 'force-cache',
     }
   );
