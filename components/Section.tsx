@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import TodayWeather from './TodayWeather';
-import HourlyWeather from './HourlyWeather';
-import WeekWeather from './WeekWeather';
-import DetailWeather from './DetailWeather';
+import TodayWeather from './weather/TodayWeather';
+import HourlyWeather from './weather/HourlyWeather';
+import WeekWeather from './weather/WeekWeather';
+import DetailWeather from './weather/DetailWeather';
 import Footer from './Footer';
-import Modal from './Modal';
+import Modal from './UI/Modal';
 import { motion } from 'framer-motion';
-import Splitter from './Splitter';
+import Splitter from './UI/Splitter';
 import { useResizable } from 'react-resizable-layout';
 import Image from 'next/image';
 import { Spinner } from './UI/Spinner';
@@ -94,7 +94,7 @@ export default function Section({
   return (
     <div
       id='main-section'
-      className='w-screen min-h-full relative lg:flex lg:grow overflow-hidden text-white'
+      className='w-screen min-h-full lg:flex lg:grow text-white overflow-y-scroll'
     >
       {windowSize > 1024 ? (
         <Modal
@@ -121,8 +121,8 @@ export default function Section({
       <Splitter isDragging={isModalDragging} {...modalDragBarProps} />
 
       <section
-        id='main-section'
-        className='w-full max-h-screen snap-y snap-mandatory overflow-y-scroll lg:flex lg:flex-col lg:grow lg:justify-center lg:items-center relative lg:pt-20'
+        // id='main-section'
+        className='w-full min-h-full lg:flex lg:flex-col lg:items-center relative overflow-y-scroll'
       >
         {isLoading && <Spinner />}
         {!isLoading && (
@@ -132,7 +132,10 @@ export default function Section({
             exit={{ y: -1000, opacity: 0 }}
             transition={{ ease: 'easeInOut', duration: 1.3 }}
           >
-            <section id='today' className='snap-start scroll-my-10 my-10 lg:py-10'>
+            <section
+              id='today'
+              className='py-10'
+            >
               <TodayWeather promise={todayWeather} other={weekWeather} />
             </section>
             <section className='mx-auto px-5 flex flex-col justify-center max-w-lg lg:max-w-screen-lg lg:grid lg:grid-cols-2 lg:grid-rows-2 gap-4 mb-32'>
@@ -175,7 +178,6 @@ export default function Section({
             </section>
           </motion.div>
         )}
-
         <Footer handleModal={handleModal} />
       </section>
     </div>

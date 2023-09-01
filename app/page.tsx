@@ -5,15 +5,12 @@ export default async function Home() {
   const hourlyWeathers = await getHourlyWeather();
   const weekWeathers = await getWeekWeather();
   return (
-    <div className='w-screen h-screen relative text-black z-0 bg-slate-400 lg:flex'>
+    <div className='w-screen h-screen relative z-0 lg:flex overflow-y-scroll'>
       <Section
         todayWeathers={todayWeathers}
         hourlyWeathers={hourlyWeathers}
         weekWeathers={weekWeathers}
       />
-
-      {/* Temporary Animated */}
-      {/* <Section todayWeathers={todayWeathers} hourlyWeathers={hourlyWeathers} weekWeathers={weekWeathers} /> */}
     </div>
   );
 }

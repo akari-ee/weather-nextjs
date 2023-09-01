@@ -4,7 +4,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 
-import { WeeklyItem } from './Item';
+import { WeeklyItem } from '@/components/item/Item';
 import { setWeatherPath } from '@/utils/handleWeatherDetail';
 
 type Props = {};

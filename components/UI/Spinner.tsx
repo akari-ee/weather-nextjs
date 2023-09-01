@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 export const Spinner = () => {
   return (
-    <div className='w-20 h-20 flex justify-center items-center'>
+    <div className='w-20 h-20 flex justify-center items-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
       <motion.img
         key='loading'
         src='/images/rain_heavy.svg'

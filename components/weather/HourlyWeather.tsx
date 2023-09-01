@@ -1,5 +1,5 @@
 import React from 'react';
-import { HourlyItem } from './Item';
+import { HourlyItem } from '@/components/item/Item';
 import dayjs from 'dayjs';
 import { setWeatherPath } from '@/utils/handleWeatherDetail';
 

@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useCallback, useEffect, useState, Fragment } from 'react';
-import { CityItem } from './Item';
+import { CityItem } from '@/components/item/Item';
 import { AiOutlineRollback } from '@react-icons/all-files/ai/AiOutlineRollback';
-import countriesData from '../data/country-lat-long.json';
+import countriesData from '../../data/country-lat-long.json';
 import { fetchWeekWeather } from '@/utils/fetchWeekWeather';
 import { fetchTodayWeather } from '@/utils/fetchTodayWeather';
 import { cn } from '@/utils/classExtend';
@@ -127,7 +127,7 @@ export default function Modal({
                   <div
                     id='modal-container'
                     className={cn(
-                      'w-full h-screen lg:opacity-100 lg:block px-5 py-5 top-0 left-0 text-white overflow-y-scroll shrink-0 transition-all ease-in-out duration-300',
+                      'w-full h-full lg:opacity-100 lg:block px-5 py-5 top-0 left-0 text-white overflow-y-scroll shrink-0 transition-all ease-in-out duration-300',
                       isBottom
                         ? 'absolute bg-[#324a5e]'
                         : 'z-[9999] bg-[#005aa7]/30',
@@ -152,7 +152,10 @@ export default function Modal({
                         </div>
                         <div className='space-y-3 mb-10'>
                           <h3 className='text-3xl font-bold mb-5'>날씨</h3>
-                          <div id='search-box' className='space-y-3 rounded-2xl'>
+                          <div
+                            id='search-box'
+                            className='space-y-3 rounded-2xl'
+                          >
                             <input
                               type='text'
                               placeholder='도시 검색'
