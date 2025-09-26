@@ -1,20 +1,14 @@
-# (Responsive) Tomorrow.io + NextJS
-
-## Stack
-- TypeScript 5.1.6
-- React 18.2.0
-- next 13.4.12 (‼️ NextJS **13 App router**)
-- tailwindcss 3.3.3
-### else
-- framer-motion 10.15.0
-- headlessui 1.7.17
-
-## Deploy on Cloud Flares
-> See on [here](https://weather-nextjs.pages.dev/)
+## Tech Stack
+- TypeScript, React, Next.js, tailwindcss
+- tomorrow.io API
+  
+## Deploy
+> https://weather-nextjs.pages.dev/
 
 ## API I used
 > [Tomorrow.io](https://www.tomorrow.io/)
 (‼️ LIMIT : 500 of available calls per day ➡️ If you exceed this limit, it wouldn't work)
+
 ## Demo
 |Mobile $<=$ 1024px|Desktop $>$ 1024px|
 |--|--|
